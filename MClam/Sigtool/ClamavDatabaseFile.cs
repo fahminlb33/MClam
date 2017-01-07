@@ -57,6 +57,9 @@ namespace MClam.Sigtool
         /// Gets digital signature of this CVD.
         /// </summary>
         public string DigitalSignature => _data.dsig;
+
+
+        internal uint stime => _data.stime;
         #endregion
 
 
