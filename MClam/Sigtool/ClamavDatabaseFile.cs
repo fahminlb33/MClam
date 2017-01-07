@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MClam.Native;
+﻿using MClam.Native;
 
 namespace MClam.Sigtool
 {
     /// <summary>
-    /// Represent a CVD file.
+    /// CVD file metadata.
     /// </summary>
-    public sealed class ClamavDatabaseFile : IDatabaseFile
+    public sealed class ClamavDatabaseFile
     {
         private cl_cvd _data;
-        private string _filePath;
 
         #region Constructor
         internal ClamavDatabaseFile(string file, cl_cvd data)
         {
-            _filePath = file;
+            FullPath = file;
             _data = data;
         }
         #endregion
@@ -26,40 +21,40 @@ namespace MClam.Sigtool
         /// <summary>
         /// Gets full path to this database file.
         /// </summary>
-        public string FullPath => _filePath;
+        public string FullPath { get; }
 
         /// <summary>
-        /// Gets date when this CVD is built (if current instance is CVD).
+        /// Gets date when this CVD is built.
         /// </summary>
         public string BuildTime => _data.time;
 
         /// <summary>
-        /// Gets current CVD version (if current instance is CVD).
+        /// Gets current CVD version.
         /// </summary>
         public uint Version => _data.version;
 
         /// <summary>
-        /// Gets number of signatures included in this CVD (if current instance is CVD).
+        /// Gets number of signatures included in this CVD.
         /// </summary>
         public uint Signatures => _data.sigs;
 
         /// <summary>
-        /// Gets CVD functionality level (if current instance is CVD).
+        /// Gets CVD functionality level.
         /// </summary>
         public uint FunctionalityLevel => _data.fl;
 
         /// <summary>
-        /// Gets who built this CVD (if current instance is CVD).
+        /// Gets who built this CVD.
         /// </summary>
         public string Builder => _data.builder;
 
         /// <summary>
-        /// Gets MD5 checksum of this CVD (if current instance is CVD).
+        /// Gets MD5 checksum of this CVD.
         /// </summary>
-        public string MD5Checksum => _data.md5;
+        public string Checksum => _data.md5;
 
         /// <summary>
-        /// Gets digital signature of this CVD (if current instance is CVD).
+        /// Gets digital signature of this CVD.
         /// </summary>
         public string DigitalSignature => _data.dsig;
         #endregion
