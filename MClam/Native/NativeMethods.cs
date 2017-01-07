@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // ReSharper disable InconsistentNaming
+
+[assembly: InternalsVisibleTo("MClam.Freshclam")]
 
 namespace MClam.Native
 {
