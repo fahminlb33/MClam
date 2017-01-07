@@ -11,7 +11,7 @@ namespace MClam
     /// </remarks>
     public sealed class ClamException : Exception
     {
-        internal ClamException(int errorCode) : base(CommonMethods.GetClamErrorText(errorCode))
+        internal ClamException(int errorCode) : base(Commons.GetClamErrorText(errorCode))
         { }
     }
 }

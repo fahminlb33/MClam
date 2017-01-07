@@ -3,7 +3,7 @@ using MClam.Native;
 
 namespace MClam
 {
-    internal static class CommonMethods
+    internal static class Commons
     {
         internal static string GetClamErrorText(int errorCode)
         {

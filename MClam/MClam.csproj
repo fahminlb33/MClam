@@ -44,7 +44,7 @@
     <Compile Include="BytecodeSecurity.cs" />
     <Compile Include="ClamException.cs" />
     <Compile Include="ClamMain.cs" />
-    <Compile Include="CommonMethods.cs" />
+    <Compile Include="Commons.cs" />
     <Compile Include="Sigtool\CountOption.cs" />
     <Compile Include="DatabaseFlags.cs" />
     <Compile Include="EngineField.cs" />
