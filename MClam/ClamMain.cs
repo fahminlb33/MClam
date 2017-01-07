@@ -39,6 +39,14 @@ namespace MClam
         {
             return Marshal.PtrToStringAnsi(NativeMethods.cl_retdbdir());
         }
-        
+
+        /// <summary>
+        /// Create new scan engine.
+        /// </summary>
+        /// <returns>New instance of <see cref="ClamEngine"/>.</returns>
+        public static ClamEngine CreateEngine()
+        {
+            return new ClamEngine();
+        }
     }
 }
