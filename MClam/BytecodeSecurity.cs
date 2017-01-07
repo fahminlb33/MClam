@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MClam
 {
@@ -13,7 +10,7 @@ namespace MClam
         /// <summary>
         /// Trust all bytecode.
         /// </summary>
-        [Obsolete()]
+        [Obsolete]
         TrustAll = 0,
         /// <summary>
         /// Trust only signaed bytecode. Default.

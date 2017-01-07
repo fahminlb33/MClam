@@ -11,7 +11,7 @@ namespace MClam
     /// ClamAV engine wrapper.
     /// </summary>
     [PermissionSet(SecurityAction.Demand)]
-    public class ClamEngine : IDisposable
+    public sealed class ClamEngine : IDisposable
     {
         private HandleRef _handle;
         private bool _compiled;
@@ -131,16 +131,57 @@ namespace MClam
 
             return result;
         }
+
+        /// <summary>
+        /// Sets engine field parameter value.
+        /// </summary>
+        /// <param name="field">Engine field.</param>
+        /// <param name="value">Value to change.</param>
+        public void SetField(EngineField field, object value)
+        {
+            Contract.Requires<ArgumentNullException>(value != null, nameof(value));
+
+            if (value is string || value is char)
+            {
+                var val = Marshal.StringToCoTaskMemAnsi(value.ToString());
+                NativeMethods.cl_engine_set_str(_handle.Handle, field, val).ThrowIfError();
+            }
+            else
+            {
+                NativeMethods.cl_engine_set_num(_handle.Handle, field, Convert.ToInt16(value));
+            }
+        }
+
+        /// <summary>
+        /// Gets engine field parameter value.
+        /// </summary>
+        /// <param name="field">Engine field.</param>
+        /// <returns>Engine parameter value.</returns>
+        public object GetField(EngineField field)
+        {
+            object value;
+            var errorCode = (int)cl_error_t.CL_SUCCESS;
+
+            if (field == EngineField.PuaCategories || field == EngineField.Keeptmp)
+            {
+                var data = NativeMethods.cl_engine_get_str(_handle.Handle, field, ref errorCode);
+                errorCode.ThrowIfError();
+                value = Marshal.PtrToStringAnsi(data);
+            }
+            else
+            {
+                value = NativeMethods.cl_engine_get_num(_handle.Handle, field, ref errorCode);
+                errorCode.ThrowIfError();
+            }
+
+            return value;
+        }
         #endregion
 
         #region IDisposable Support
         private bool _disposedValue;
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <param name="disposing">Dispose managed objects.</param>
-        protected virtual void Dispose(bool disposing)
+        
+        void Dispose(bool disposing)
         {
             if (_disposedValue) return;
             if (disposing)

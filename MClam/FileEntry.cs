@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using MClam.Native;
 
 namespace MClam
@@ -10,7 +7,7 @@ namespace MClam
     /// <summary>
     /// Represent a file to scan.
     /// </summary>
-    public class FileEntry : IDisposable
+    public sealed class FileEntry : IDisposable
     {
         private readonly int _fileDesc;
         private readonly string _filePath;
@@ -57,16 +54,12 @@ namespace MClam
         #region IDisposable Support
         private bool _disposedValue;
         
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
-        protected virtual void Dispose(bool disposing)
+        void Dispose(bool disposing)
         {
             if (_disposedValue) return;
             if (disposing)
             {
-                // TODO: dispose managed state (managed objects).
+               
             }
 
             // release file
@@ -93,6 +86,5 @@ namespace MClam
             GC.SuppressFinalize(this);
         }
         #endregion
-
     }
 }

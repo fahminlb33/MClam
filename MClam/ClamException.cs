@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MClam
 {
@@ -12,7 +9,7 @@ namespace MClam
     /// This class should not be thrown outside by <c>MClam</c> internals.</para>
     /// <para>See <c>The ClamException and other Exceptions.</c> topic on the <c>Cheatsheet.</c></para>
     /// </remarks>
-    public class ClamException : Exception
+    public sealed class ClamException : Exception
     {
         internal ClamException(int errorCode) : base(CommonMethods.GetClamErrorText(errorCode))
         { }
