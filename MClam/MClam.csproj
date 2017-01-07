@@ -43,8 +43,7 @@
     <Compile Include="ClamException.cs" />
     <Compile Include="ClamMain.cs" />
     <Compile Include="CommonMethods.cs" />
-    <Compile Include="CountOption.cs" />
-    <Compile Include="IDatabaseFile.cs" />
+    <Compile Include="Sigtool\CountOption.cs" />
     <Compile Include="DatabaseFlags.cs" />
     <Compile Include="EngineField.cs" />
     <Compile Include="FileEntry.cs" />
@@ -58,10 +57,7 @@
     <Compile Include="ScanResult.cs" />
     <Compile Include="Sigtool\ClamavDatabaseFile.cs" />
     <Compile Include="Sigtool\DatabaseType.cs" />
-    <Compile Include="Sigtool\MD5HashDatabaseFile.cs" />
-    <Compile Include="Sigtool\PEHashDatabaseFile.cs" />
-    <Compile Include="Sigtool\SHAHashDatabaseFile.cs" />
-    <Compile Include="Sigtool\SigtoolFactory.cs" />
+    <Compile Include="Sigtool\SigtoolMain.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -8,7 +8,7 @@
         /// <summary>
         /// Virus name (if the file is infected).
         /// </summary>
-        public string VirusName { get; internal set; }
+        public string MalwareName { get; internal set; }
 
         /// <summary>
         /// Fullpath to file has been scanned.

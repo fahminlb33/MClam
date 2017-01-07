@@ -1,11 +1,9 @@
-﻿using MClam.Native;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
+using System.Diagnostics.Contracts;
 using System.Security.Permissions;
-using System.Text;
+using System.Runtime.InteropServices;
+using MClam.Native;
 
 namespace MClam
 {
@@ -19,7 +17,14 @@ namespace MClam
         private bool _compiled;
         private uint _signatureCount;
 
+        private const string ErrorDatabaseNotLoaded = "Database is not loaded.";
+        private const string ErrorEngineComplied = "Engine is already compiled.";
+        private const string ErrorEngineNotCompiled = "Engine is not compiled.";
+
         #region Constructor
+        /// <summary>
+        /// Initialize new instance of <see cref="ClamEngine"/>.
+        /// </summary>
         public ClamEngine()
         {
             _handle = new HandleRef(this, NativeMethods.cl_engine_new());
@@ -56,19 +61,10 @@ namespace MClam
         /// <param name="flags">Database loading options (default <see cref="DatabaseFlags.Standard"/>.</param>
         public void Load(string path, DatabaseFlags flags = DatabaseFlags.Standard)
         {
-            ThrowIfCompiled(compiled: true);
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(path), nameof(path));
+            Contract.Requires<InvalidOperationException>(!IsCompiled, ErrorEngineComplied);
 
             NativeMethods.cl_load(path, _handle.Handle, ref _signatureCount, (uint)flags).ThrowIfError();
-        }
-
-        /// <summary>
-        /// Load a single database file to current instance of <see cref="ClamEngine"/>.
-        /// </summary>
-        /// <param name="file">Database file to load.</param>
-        /// <param name="flags">Database loading options (default <see cref="DatabaseFlags.Standard"/>.</param>
-        public void Load(IDatabaseFile file, DatabaseFlags flags = DatabaseFlags.Standard)
-        {
-            Load(file.FullPath, flags);
         }
 
         /// <summary>
@@ -76,8 +72,8 @@ namespace MClam
         /// </summary>
         public void Compile()
         {
-            ThrowIfDatabase(loaded: false);
-            ThrowIfCompiled(compiled: true);
+            Contract.Requires<InvalidOperationException>(IsLoaded, ErrorDatabaseNotLoaded);
+            Contract.Requires<InvalidOperationException>(!IsCompiled, ErrorEngineComplied);
 
             NativeMethods.cl_engine_compile(_handle.Handle).ThrowIfError();
             _compiled = true;
@@ -90,6 +86,9 @@ namespace MClam
         /// <returns><see cref="ScanResult"/> object containing scan information.</returns>
         public ScanResult ScanFile(string path)
         {
+            Contract.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(path), nameof(path));
+            Contract.Requires<FileNotFoundException>(File.Exists(path));
+
             return ScanFile(FileEntry.Open(path));
         }
 
@@ -100,8 +99,8 @@ namespace MClam
         /// <returns><see cref="ScanResult"/> object containing scan information.</returns>
         public ScanResult ScanFile(FileEntry file)
         {
-            ThrowIfDatabase(loaded: false);
-            ThrowIfCompiled(compiled: false);
+            Contract.Requires<ArgumentNullException>(file != null, nameof(file));
+            Contract.Requires<InvalidOperationException>(IsCompiled, ErrorEngineNotCompiled);
 
             var fscaned = 0;
             var vname = IntPtr.Zero;
@@ -119,7 +118,7 @@ namespace MClam
             {
                 case (int) cl_error_t.CL_VIRUS:
                     result.IsVirus = true;
-                    result.VirusName = Marshal.PtrToStringAnsi(vname);
+                    result.MalwareName = Marshal.PtrToStringAnsi(vname);
                     break;
 
                 case (int) cl_error_t.CL_CLEAN:
@@ -131,20 +130,6 @@ namespace MClam
             }
 
             return result;
-        }
-        #endregion
-
-        #region Helper
-        private void ThrowIfDatabase(bool loaded)
-        {
-            if (IsLoaded == loaded) return;
-            throw new InvalidOperationException("This engine is not loaded by database.");
-        }
-
-        private void ThrowIfCompiled(bool compiled)
-        {
-            if (IsCompiled == compiled) return;
-            throw new InvalidOperationException("This engine is already compiled.");
         }
         #endregion
 
