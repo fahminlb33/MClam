@@ -35,18 +35,19 @@ namespace MClam.Sigtool
             var fname = string.Copy(fileName);
             switch (type)
             {
-                case DatabaseType.SHAHash:
+                case DatabaseType.ShaHash:
                     fname += ".hsb";
                     break;
-                case DatabaseType.MD5Hash:
+                case DatabaseType.Md5Hash:
                     fname += ".hdb";
                     break;
-                case DatabaseType.PESectionHash:
+                case DatabaseType.PeSectionHash:
                     fname += ".msb";
                     break;
             }
 
             _writer = new StreamWriter(Path.Combine(outputPath, fname), append);
+            _writer.NewLine = "\n";
             _type = type;
         }
         #endregion
@@ -60,7 +61,7 @@ namespace MClam.Sigtool
         {
             Contract.Requires<ArgumentNullException>(entry != null, nameof(entry));
 
-            if (_type == DatabaseType.MD5Hash || _type == DatabaseType.SHAHash)
+            if (_type == DatabaseType.Md5Hash || _type == DatabaseType.ShaHash)
                 WriteFileHashEntry(entry);
             else
                 WritePeHashEntry(entry);
@@ -94,7 +95,7 @@ namespace MClam.Sigtool
             if (entry.Size == -1) data = $"{entry.Hash}:*:{entry.MalwareName}:73";
             else data = $"{entry.Hash}:{entry.Size}:{entry.MalwareName}";
 
-            _writer.Write(data);
+            _writer.WriteLine(data);
         }
 
         private void WritePeHashEntry(HashDatabaseEntry entry)
@@ -103,7 +104,7 @@ namespace MClam.Sigtool
             if (entry.Size == -1) data = $"*:{entry.Hash}:{entry.MalwareName}:73";
             else data = $"{entry.Size}:{entry.Hash}:{entry.MalwareName}";
 
-            _writer.Write(data);
+            _writer.WriteLine(data);
         }
         #endregion
 

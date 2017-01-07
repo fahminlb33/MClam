@@ -5,7 +5,10 @@ using System.Text;
 
 namespace MClam.Sigtool
 {
-    public class Class1
+    public enum Algorithm
     {
+        MD5,
+        SHA1,
+        SHA256,
     }
 }
