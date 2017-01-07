@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BytecodeMode.cs" />
+    <Compile Include="BytecodeSecurity.cs" />
     <Compile Include="ClamException.cs" />
     <Compile Include="ClamMain.cs" />
     <Compile Include="CommonMethods.cs" />

@@ -21,7 +21,7 @@
         ShaHash,
 
         /// <summary>
-        /// PE section hash database.
+        /// Pe section hash database.
         /// </summary>
         PeSectionHash,
 

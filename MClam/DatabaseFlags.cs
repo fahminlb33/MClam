@@ -2,29 +2,40 @@
 
 namespace MClam
 {
+    /// <summary>
+    /// Database load flags.
+    /// </summary>
     [Flags]
     public enum DatabaseFlags
     {
+        /// <summary>
+        /// Load phishing signatures.
+        /// </summary>
         Phishing = 2,
+
+        /// <summary>
+        /// Initialize the phishing detection module and load .wdb and .pdb files.
+        /// </summary>
         PhishingUrls = 8,
+
+        /// <summary>
+        /// Load signatures for Potentially Unwanted Applications.
+        /// </summary>
         Pua = 16,
-        Cvdnotmp = 32,
+
+        /// <summary>
+        /// Only load official signatures from digitally signed databases.
+        /// </summary>
         Official = 64,
-        PuaMode = 128,
-        PuaInclude = 256,
-        PuaExclude = 512,
-        Compiled = 1024,
-        Directory = 2048,
-        OfficialOnly = 4096,
+
+        /// <summary>
+        /// Load bytecode.
+        /// </summary>
         Bytecode = 8192,
-        Signed = 16384,
-        BytecodeUnsigned = 32768,
-        Unsigned = 65536,
-        BytecodeStats = 131072,
-        Enhanced = 262144,
-        PcreStats = 524288,
-        YaraExclude = 1048576,
-        YaraOnly = 2097152,
+
+        /// <summary>
+        /// This is a recommended set of database load flags.
+        /// </summary>
         Standard = Phishing | PhishingUrls | Bytecode,
     }
 }

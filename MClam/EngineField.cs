@@ -71,7 +71,7 @@ namespace MClam
         /// </summary>
         Keeptmp,
         /// <summary>
-        /// <c>UInt32</c> length. Numerical type. Use <see cref="MClam.Engine.BytecodeSecurity"/> enumeration
+        /// <c>UInt32</c> length. Numerical type. Use <see cref="MClam.BytecodeSecurity"/> enumeration
         /// to fill the value.
         /// </summary>
         BytecodeSecurity,
@@ -80,7 +80,7 @@ namespace MClam
         /// </summary>
         BytecodeTimeout,
         /// <summary>
-        /// <c>UInt32</c> length. Numerical type. Use <see cref="MClam.Engine.BytecodeMode"/> enumeration
+        /// <c>UInt32</c> length. Numerical type. Use <see cref="MClam.BytecodeMode"/> enumeration
         /// to fill the value.
         /// </summary>
         BytecodeMode,

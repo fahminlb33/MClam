@@ -56,7 +56,11 @@ namespace MClam
 
         #region IDisposable Support
         private bool _disposedValue;
-
+        
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
         protected virtual void Dispose(bool disposing)
         {
             if (_disposedValue) return;
