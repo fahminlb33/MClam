@@ -1,5 +1,5 @@
-# MClam
-Simplified libclamav wrapper for C#
+# MClam [![Build Status](https://travis-ci.org/fahminlb33/MClam.svg?branch=master)](https://travis-ci.org/fahminlb33/MClam)
+Fully managed libclamav wrapper , written in C#
 
 ## What is this?
 
@@ -8,6 +8,10 @@ abilities for your applications.
 
 Well coded using C# with great documentation. I hope this library would
 be useful for you.
+
+## How to use
+
+Download 
 
 ## Is it stable?
 
