@@ -11,7 +11,7 @@ be useful for you.
 
 ## How to use
 
-Download 
+Clone this repo and open up the solution file to see examples.
 
 ## Is it stable?
 
