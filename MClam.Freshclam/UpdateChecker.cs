@@ -3,6 +3,7 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using MClam.Native;
+using MClam.Shared;
 using MClam.Sigtool;
 
 namespace MClam.Freshclam
@@ -20,6 +21,9 @@ namespace MClam.Freshclam
         /// <returns><c>True</c> when update is availiable, otherwise <c>False</c>.</returns>
         public bool HasUpdate(string cvdPath, string url)
         {
+            ArgValidate.NotEmptyString(cvdPath, nameof(cvdPath));
+            ArgValidate.FileExist(cvdPath, nameof(cvdPath));
+
             var remoteTime = GetRemoteVersion(url);
             var local = SigtoolMain.GetCvdMetadata(cvdPath);
 
@@ -33,6 +37,8 @@ namespace MClam.Freshclam
         /// <returns>Version number.</returns>
         public uint GetRemoteVersion(string url)
         {
+            ArgValidate.NotEmptyString(url, nameof(url));
+
             var head = GetRemoteResponse(url);
             var meta = NativeMethods.cl_cvdparse(head);
             if (meta == IntPtr.Zero) throw new Exception("Malformed CVD header.");
