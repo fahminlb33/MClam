@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using MClam.Native;
+using MClam.Shared;
 
 namespace MClam
 {
@@ -28,7 +29,8 @@ namespace MClam
         /// <returns><see cref="FileEntry"/> object from specified file.</returns>
         public static FileEntry Open(string filePath)
         {
-            if (!File.Exists(filePath)) throw new FileNotFoundException();
+            ArgValidate.NotEmptyString(filePath, nameof(filePath));
+            ArgValidate.FileExist(filePath, nameof(filePath));
 
             return new FileEntry(filePath);
         }
@@ -57,10 +59,7 @@ namespace MClam
         void Dispose(bool disposing)
         {
             if (_disposedValue) return;
-            if (disposing)
-            {
-               
-            }
+            if (disposing) { }
 
             // release file
             if (IsValid) NativeMethods.close(_fileDesc);
