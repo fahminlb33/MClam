@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using MClam.Native;
+using MClam.Shared;
 
 namespace MClam
 {

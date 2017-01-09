@@ -4,8 +4,6 @@ using System.Runtime.InteropServices;
 
 // ReSharper disable InconsistentNaming
 
-[assembly: InternalsVisibleTo("MClam.Freshclam")]
-
 namespace MClam.Native
 {
     internal class NativeMethods

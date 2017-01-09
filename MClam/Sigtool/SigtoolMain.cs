@@ -4,6 +4,7 @@ using System.Security.Permissions;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using MClam.Native;
+using MClam.Shared;
 
 namespace MClam.Sigtool
 {

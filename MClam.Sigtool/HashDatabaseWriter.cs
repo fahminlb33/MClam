@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Diagnostics.Contracts;
+using MClam.Shared;
 
 namespace MClam.Sigtool
 {
@@ -30,7 +31,7 @@ namespace MClam.Sigtool
             Contract.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(outputPath), nameof(outputPath));
             Contract.Requires<DirectoryNotFoundException>(!Directory.Exists(outputPath));
             Contract.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(fileName), nameof(fileName));
-            Contract.Requires<ArgumentOutOfRangeException>(SigtoolHelper.IsHashDatabase(type), nameof(fileName));
+            Contract.Requires<ArgumentOutOfRangeException>(Commons.IsHashDatabase(type), nameof(fileName));
             
             var fname = string.Copy(fileName);
             switch (type)

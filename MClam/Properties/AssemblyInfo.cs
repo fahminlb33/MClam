@@ -19,6 +19,10 @@ using System.Runtime.InteropServices;
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
 
+// Classes visibility
+[assembly: InternalsVisibleTo("MClam.Freshclam")]
+[assembly: InternalsVisibleTo("MClam.Sigtool")]
+
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("12ebde43-c8c0-4e1a-a90e-ccedd192f3c4")]
 

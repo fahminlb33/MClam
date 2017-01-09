@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using MClam;
 
 namespace FileScanExample
 {
@@ -9,7 +12,118 @@ namespace FileScanExample
     {
         static void Main(string[] args)
         {
-            //trigger TravisCI
+            PrintWelcomeMessage();
+
+            // get file path
+            Console.WriteLine("1. Enter file path to scan.");
+            var scanPath = GetFilePath();
+            Console.WriteLine();
+
+            // get database path
+            Console.WriteLine("1. Enter database file path.");
+            var databasePath = GetFilePath();
+            Console.WriteLine();
+
+            // check paths
+            if (!File.Exists(scanPath) || !File.Exists(databasePath))
+            {
+                Console.WriteLine("Scan path or database path is not exist! Exiting...");
+                PrintExitMessage();
+            }
+
+            // do scan
+            try
+            {
+                // initialize libclamav
+                PrintLog("Initializing libclamav...");
+                ClamMain.Initialize();
+                PrintLog("libclamav initialized.");
+
+                // create new engine
+                PrintLog("Creating new engine instance...");
+                using (var engine = ClamMain.CreateEngine())
+                {
+                    PrintLog("Engine instance is created.");
+
+                    // load database
+                    PrintLog("Loading database...");
+                    engine.Load(databasePath);
+                    PrintLog("Database loaded.");
+
+                    // compile engine
+                    PrintLog("Compiling engine...");
+                    engine.Compile();
+                    PrintLog("Engine compiled.");
+
+                    // scan the file
+                    PrintLog("Scanning file...");
+                    var result = engine.ScanFile(scanPath);
+                    PrintLog("SCAN FINISHED.");
+                    Console.WriteLine("Scanned:      " + result.Scanned);
+                    Console.WriteLine("IsVirus:      " + result.IsVirus);
+                    Console.WriteLine("MalwareName:  " + result.IsVirus);
+                    
+                    PrintLog("Releasing engine...");
+                }
+                PrintLog("Engine released.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine();
+                CenterText("-----EXCEPTION CAUGHT-----");
+                Console.WriteLine(ex.ToString());
+            }
+
+            // exit
+            Console.WriteLine();
+            Console.WriteLine();
+            PrintExitMessage();
         }
+
+        static void PrintWelcomeMessage()
+        {
+            CenterText(@" __  __  _____ _                 ");
+            CenterText(@"|  \/  |/ ____| |                ");
+            CenterText(@"| \  / | |    | | __ _ _ __ ___  ");
+            CenterText(@"| |\/| | |    | |/ _` | '_ ` _ \ ");
+            CenterText(@"| |  | | |____| | (_| | | | | | |");
+            CenterText(@"|_|  |_|\_____|_|\__,_|_| |_| |_|");
+            Console.WriteLine();
+            CenterText(@"          FileScanExample         ");
+            Console.WriteLine();
+            CenterText(@"This example demonstrate how to do");
+            CenterText(@"file scanning using MClam library.");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+        }
+
+        static void PrintExitMessage()
+        {
+            Console.Write("Press anykey to exit...");
+            Console.Read();
+            Environment.Exit(0);
+        }
+
+        static void PrintLog(string message)
+        {
+            Console.WriteLine($"{DateTime.Now.ToShortTimeString()}   {message}");
+        }
+
+        static string GetFilePath()
+        {
+            Console.WriteLine();
+            Console.Write("   File path: ");
+            var path = Console.ReadLine();
+            Console.WriteLine();
+            return path;
+        }
+
+        static void CenterText(String text)
+        {
+            Console.Write(new string(' ', (Console.WindowWidth - text.Length) / 2));
+            Console.WriteLine(text);
+        }
+
     }
 }
