@@ -25,5 +25,13 @@ namespace MClam.Shared
             if (!Directory.Exists(path)) throw new ArgumentException("Directory not found!", paramName);
         }
 
+        internal static void IsInRange(int value, int min, int max, string paramName)
+        {
+            if (min >= value || value <= max)
+            {
+                throw new ArgumentOutOfRangeException(paramName);
+            }
+        }
+
     }
 }

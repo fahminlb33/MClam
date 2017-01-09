@@ -13,11 +13,6 @@ namespace MClam.Sigtool
         private DatabaseType _type;
         private readonly StreamWriter _writer;
 
-        /// <summary>
-        /// Database hash type.
-        /// </summary>
-        public DatabaseType Type => _type;
-
         #region Constructor
         /// <summary>
         /// Initialize new instance of <see cref="HashDatabaseWriter"/> with specified hash type.
@@ -28,10 +23,10 @@ namespace MClam.Sigtool
         /// <param name="append">Specifies that this writer is appending not overwriting.</param>
         public HashDatabaseWriter(string outputPath, string fileName, DatabaseType type, bool append)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(outputPath), nameof(outputPath));
-            Contract.Requires<DirectoryNotFoundException>(!Directory.Exists(outputPath));
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(fileName), nameof(fileName));
-            Contract.Requires<ArgumentOutOfRangeException>(Commons.IsHashDatabase(type), nameof(fileName));
+            ArgValidate.NotEmptyString(outputPath, nameof(outputPath));
+            ArgValidate.DirectoryExist(outputPath, nameof(outputPath));
+            ArgValidate.NotEmptyString(fileName, nameof(fileName));
+            ArgValidate.FileExist(fileName, nameof(fileName));
             
             var fname = string.Copy(fileName);
             switch (type)
@@ -50,10 +45,19 @@ namespace MClam.Sigtool
                     break;
             }
 
-            _writer = new StreamWriter(Path.Combine(outputPath, fname), append);
-            _writer.NewLine = "\n";
             _type = type;
+            _writer = new StreamWriter(Path.Combine(outputPath, fname), append)
+            {
+                NewLine = "\n"
+            };
         }
+        #endregion
+
+        #region Properties
+        /// <summary>
+        /// Database hash type.
+        /// </summary>
+        public DatabaseType Type => _type;
         #endregion
 
         #region Public Methods
@@ -63,7 +67,7 @@ namespace MClam.Sigtool
         /// <param name="entry">Entry to be added.</param>
         public void Write(HashDatabaseEntry entry)
         {
-            Contract.Requires<ArgumentNullException>(entry != null, nameof(entry));
+            ArgValidate.NotNull(entry, nameof(entry));
 
             if (_type == DatabaseType.Md5Hash || _type == DatabaseType.Sha1Hash || _type == DatabaseType.Sha256Hash)
                 WriteFileHashEntry(entry);
@@ -79,9 +83,12 @@ namespace MClam.Sigtool
         /// <param name="name">Malware name.</param>
         public void Write(string hash, int size, string name)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(hash), nameof(hash));
-            Contract.Requires<ArgumentOutOfRangeException>(size == -1 || size > 0, nameof(size));
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(name), nameof(name));
+            ArgValidate.NotEmptyString(hash, nameof(hash));
+            ArgValidate.NotEmptyString(name, nameof(name));
+            if (!(size == -1 || size > 0))
+            {
+                throw new ArgumentOutOfRangeException(nameof(size));
+            }
 
             Write(new HashDatabaseEntry
             {
