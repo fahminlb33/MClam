@@ -22,5 +22,10 @@ namespace MClam.Shared
         {
             if (!File.Exists(path)) throw new ArgumentException("File not found!", paramName);
         }
+
+        public static void DirectoryExist(string path, string paramName)
+        {
+            if (!Directory.Exists(path)) throw new ArgumentException("Directory not found!", paramName);
+        }
     }
 }
