@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MClam.Native
+﻿namespace MClam.Native
 {
     internal enum cl_error_t : int
     {
