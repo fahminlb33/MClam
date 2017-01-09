@@ -129,7 +129,10 @@
     <Compile Include="BytecodeSecurity.cs" />
     <Compile Include="ClamException.cs" />
     <Compile Include="ClamMain.cs" />
+    <Compile Include="DatabaseStateChecker.cs" />
+    <Compile Include="Native\cl_stat.cs" />
     <Compile Include="Shared\Commons.cs" />
+    <Compile Include="Shared\ArgValidate.cs" />
     <Compile Include="Sigtool\CountOption.cs" />
     <Compile Include="DatabaseFlags.cs" />
     <Compile Include="EngineField.cs" />
