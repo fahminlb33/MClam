@@ -8,16 +8,16 @@
         /// <summary>
         /// Count official database only.
         /// </summary>
-        Official,
+        Official = 0x01,
 
         /// <summary>
         /// Count unofficial database only.
         /// </summary>
-        Unofficial,
+        Unofficial = 0x02,
 
         /// <summary>
         /// Count both official and unofficial database.
         /// </summary>
-        All
+        All = Official | Unofficial
     }
 }
