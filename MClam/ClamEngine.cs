@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Diagnostics.Contracts;
 using System.Security.Permissions;
 using System.Runtime.InteropServices;
 using MClam.Native;
@@ -17,10 +15,6 @@ namespace MClam
         private HandleRef _handle;
         private bool _compiled;
         private uint _signatureCount;
-
-        private const string ErrorDatabaseNotLoaded = "Database is not loaded.";
-        private const string ErrorEngineComplied = "Engine is already compiled.";
-        private const string ErrorEngineNotCompiled = "Engine is not compiled.";
 
         #region Constructor
         /// <summary>
@@ -62,8 +56,8 @@ namespace MClam
         /// <param name="flags">Database loading options (default <see cref="DatabaseFlags.Standard"/>.</param>
         public void Load(string path, DatabaseFlags flags = DatabaseFlags.Standard)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(path), nameof(path));
-            Contract.Requires<InvalidOperationException>(!IsCompiled, ErrorEngineComplied);
+            ArgValidate.NotEmptyString(path, nameof(path));
+            ThrowIfCompiled();
 
             NativeMethods.cl_load(path, _handle.Handle, ref _signatureCount, (uint)flags).ThrowIfError();
         }
@@ -73,8 +67,8 @@ namespace MClam
         /// </summary>
         public void Compile()
         {
-            Contract.Requires<InvalidOperationException>(IsLoaded, ErrorDatabaseNotLoaded);
-            Contract.Requires<InvalidOperationException>(!IsCompiled, ErrorEngineComplied);
+            ThrowIfNotLoaded();
+            ThrowIfCompiled();
 
             NativeMethods.cl_engine_compile(_handle.Handle).ThrowIfError();
             _compiled = true;
@@ -87,8 +81,8 @@ namespace MClam
         /// <returns><see cref="ScanResult"/> object containing scan information.</returns>
         public ScanResult ScanFile(string path)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrWhiteSpace(path), nameof(path));
-            Contract.Requires<FileNotFoundException>(File.Exists(path));
+            ArgValidate.NotEmptyString(path, nameof(path));
+            ArgValidate.FileExist(path, nameof(path));
 
             return ScanFile(FileEntry.Open(path));
         }
@@ -100,8 +94,8 @@ namespace MClam
         /// <returns><see cref="ScanResult"/> object containing scan information.</returns>
         public ScanResult ScanFile(FileEntry file)
         {
-            Contract.Requires<ArgumentNullException>(file != null, nameof(file));
-            Contract.Requires<InvalidOperationException>(IsCompiled, ErrorEngineNotCompiled);
+            ArgValidate.NotNull(file, nameof(file));
+            ThrowIsNotCompiled();
 
             var fscaned = 0;
             var vname = IntPtr.Zero;
@@ -140,7 +134,8 @@ namespace MClam
         /// <param name="value">Value to change.</param>
         public void SetField(EngineField field, object value)
         {
-            Contract.Requires<ArgumentNullException>(value != null, nameof(value));
+            ArgValidate.NotNull(value, nameof(value));
+            ThrowIfCompiled();
 
             if (value is string || value is char)
             {
@@ -160,6 +155,8 @@ namespace MClam
         /// <returns>Engine parameter value.</returns>
         public object GetField(EngineField field)
         {
+            ThrowIfCompiled();
+
             object value;
             var errorCode = (int)cl_error_t.CL_SUCCESS;
 
@@ -176,6 +173,23 @@ namespace MClam
             }
 
             return value;
+        }
+        #endregion
+
+        #region Validators
+        private void ThrowIfCompiled()
+        {
+            if (IsCompiled) throw new InvalidOperationException("Engine is already compiled.");
+        }
+
+        private void ThrowIsNotCompiled()
+        {
+            if (!IsCompiled) throw new InvalidOperationException("Engine is not compiled!");
+        }
+        
+        private void ThrowIfNotLoaded()
+        {
+            if (!IsLoaded) throw new InvalidOperationException("Engine is not loaded!");
         }
         #endregion
 

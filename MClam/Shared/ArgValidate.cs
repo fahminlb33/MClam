@@ -24,5 +24,6 @@ namespace MClam.Shared
         {
             if (!Directory.Exists(path)) throw new ArgumentException("Directory not found!", paramName);
         }
+
     }
 }
