@@ -16,9 +16,14 @@
         Md5Hash,
 
         /// <summary>
-        /// SHA1 and SHA256 hash database.
+        /// SHA1 hash database.
         /// </summary>
-        ShaHash,
+        Sha1Hash,
+
+        /// <summary>
+        /// SHA256 hash database.
+        /// </summary>
+        Sha256Hash,
 
         /// <summary>
         /// Pe section hash database.

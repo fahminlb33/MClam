@@ -22,7 +22,8 @@ namespace MClam.Shared
         internal static bool IsHashDatabase(DatabaseType type)
         {
             return type == DatabaseType.Md5Hash ||
-                   type == DatabaseType.ShaHash ||
+                   type == DatabaseType.Sha1Hash ||
+                   type == DatabaseType.Sha256Hash ||
                    type == DatabaseType.PeSectionHash;
         }
     }

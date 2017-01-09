@@ -69,6 +69,8 @@ namespace MClam.Sigtool
         /// </summary>
         /// <param name="filePath">Full path to database file.</param>
         /// <returns><see cref="DatabaseType"/> represents specified database file type.</returns>
+        /// <remarks>SHA-based hash database is using same file extension. You need to
+        /// use appropriate hash algorithm when using Sigtool writer.</remarks>
         public static DatabaseType GetDatabaseType(string filePath)
         {
             switch (Path.GetExtension(filePath))
@@ -80,7 +82,7 @@ namespace MClam.Sigtool
                     return DatabaseType.Md5Hash;
 
                 case ".hsb":
-                    return DatabaseType.ShaHash;
+                    return DatabaseType.Sha1Hash;
 
                 case ".msb":
                     return DatabaseType.PeSectionHash;

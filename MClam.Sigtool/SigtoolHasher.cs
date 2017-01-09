@@ -11,24 +11,24 @@ namespace MClam.Sigtool
     /// </summary>
     public sealed class SigtoolHasher : IDisposable
     {
-        private HashAlgorithm _hasher;
+        private readonly HashAlgorithm _hasher;
 
         #region Constructor
         /// <summary>
         /// Initialize new instance of <see cref="SigtoolHasher"/>.
         /// </summary>
         /// <param name="method">Hash algorithm.</param>
-        public SigtoolHasher(Algorithm method)
+        public SigtoolHasher(HasherAlgorithm method)
         {
             switch (method)
             {
-                case Algorithm.MD5:
+                case HasherAlgorithm.Md5:
                     _hasher = MD5.Create();
                     break;
-                case Algorithm.SHA1:
+                case HasherAlgorithm.Sha1:
                     _hasher = SHA1.Create();
                     break;
-                case Algorithm.SHA256:
+                case HasherAlgorithm.Sha256:
                     _hasher = SHA256.Create();
                     break;
             }

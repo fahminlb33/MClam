@@ -36,7 +36,10 @@ namespace MClam.Sigtool
             var fname = string.Copy(fileName);
             switch (type)
             {
-                case DatabaseType.ShaHash:
+                case DatabaseType.Sha1Hash:
+                    fname += ".hsb";
+                    break;
+                case DatabaseType.Sha256Hash:
                     fname += ".hsb";
                     break;
                 case DatabaseType.Md5Hash:
@@ -62,7 +65,7 @@ namespace MClam.Sigtool
         {
             Contract.Requires<ArgumentNullException>(entry != null, nameof(entry));
 
-            if (_type == DatabaseType.Md5Hash || _type == DatabaseType.ShaHash)
+            if (_type == DatabaseType.Md5Hash || _type == DatabaseType.Sha1Hash || _type == DatabaseType.Sha256Hash)
                 WriteFileHashEntry(entry);
             else
                 WritePeHashEntry(entry);
