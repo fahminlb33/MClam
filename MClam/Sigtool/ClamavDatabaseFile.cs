@@ -1,4 +1,5 @@
 ﻿using MClam.Native;
+using MClam.Shared;
 
 namespace MClam.Sigtool
 {
@@ -12,6 +13,10 @@ namespace MClam.Sigtool
         #region Constructor
         internal ClamavDatabaseFile(string file, cl_cvd data)
         {
+            ArgValidate.NotNull(data, nameof(data));
+            ArgValidate.NotNull(file, nameof(file));
+            ArgValidate.FileExist(file, nameof(file));
+
             FullPath = file;
             _data = data;
         }
@@ -21,7 +26,7 @@ namespace MClam.Sigtool
         /// <summary>
         /// Gets full path to this database file.
         /// </summary>
-        public string FullPath { get; }
+        public string FullPath { get; private set; }
 
         /// <summary>
         /// Gets date when this CVD is built.
@@ -57,11 +62,6 @@ namespace MClam.Sigtool
         /// Gets digital signature of this CVD.
         /// </summary>
         public string DigitalSignature => _data.dsig;
-
-
-        internal uint stime => _data.stime;
         #endregion
-
-
     }
 }
