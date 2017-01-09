@@ -73,7 +73,18 @@ namespace MClam.Native
 
         [DllImport(LibclamavName, EntryPoint = "cl_retdbdir", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr cl_retdbdir();
+
+
+        // ----- Database Stats ---------------------------------------------
+        [DllImport(LibclamavName, EntryPoint = "cl_statinidir", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int cl_statinidir([In, MarshalAs(UnmanagedType.LPStr)] string dirname, IntPtr dbstat);
         
+        [DllImport(LibclamavName, EntryPoint = "cl_statchkdir", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int cl_statchkdir(IntPtr dbstat);
+        
+        [DllImport(LibclamavName, EntryPoint = "cl_statfree", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int cl_statfree(IntPtr dbstat);
+
 
         // ----- Other methods ----------------------------------------------
         [DllImport(LibclamavName, EntryPoint = "cl_init", CallingConvention = CallingConvention.Cdecl)]
